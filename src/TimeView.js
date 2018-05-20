@@ -28,7 +28,7 @@ var DateTimePickerTime = onClickOutside( createClass({
 		}
 
 		var hours = date.format( 'H' );
-		
+
 		var daypart = false;
 		if ( this.state !== null && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
 			if ( this.props.timeFormat.indexOf( ' A' ) !== -1 ) {
@@ -48,30 +48,35 @@ var DateTimePickerTime = onClickOutside( createClass({
 		};
 	},
 
-	renderCounter: function( type ) {
-		if ( type !== 'daypart' ) {
-			var value = this.state[ type ];
-			if ( type === 'hours' && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
-				value = ( value - 1 ) % 12 + 1;
+  renderCounter: function( type ) {
+    if ( type !== 'daypart' ) {
+      var value = this.state[ type ];
+      if ( type === 'hours' && this.props.timeFormat.toLowerCase().indexOf( ' a' ) !== -1 ) {
+        value = ( value - 1 ) % 12 + 1;
 
-				if ( value === 0 ) {
-					value = 12;
-				}
-			}
-			return React.createElement('div', { key: type, className: 'rdtCounter' }, [
-				React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, '▲' ),
-				React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
-				React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, '▼' )
-			]);
-		}
-		return '';
-	},
+        if ( value === 0 ) {
+          value = 12;
+        }
+      }
+
+      var chevronUp = React.createElement('i', { className: 'fas fa-chevron-up' });
+      var chevronDown = React.createElement('i', { className: 'fas fa-chevron-down' });
+      return React.createElement('div', { key: type, className: 'rdtCounter' }, [
+        React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'increase', type ), onContextMenu: this.disableContextMenu }, type === 'minutes' ? '' : chevronUp ),
+        React.createElement('div', { key: 'c', className: 'rdtCount' }, value ),
+        React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'decrease', type ), onContextMenu: this.disableContextMenu }, type === 'minutes' ? '' : chevronDown )
+      ]);
+    }
+    return '';
+  },
 
 	renderDayPart: function() {
+    var chevronUp = React.createElement('i', { className: 'fas fa-chevron-up' });
+    var chevronDown = React.createElement('i', { className: 'fas fa-chevron-down' });
 		return React.createElement('div', { key: 'dayPart', className: 'rdtCounter' }, [
-			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▲' ),
+			React.createElement('span', { key: 'up', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, chevronUp ),
 			React.createElement('div', { key: this.state.daypart, className: 'rdtCount' }, this.state.daypart ),
-			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, '▼' )
+			React.createElement('span', { key: 'do', className: 'rdtBtn', onMouseDown: this.onStartClicking( 'toggleDayPart', 'hours'), onContextMenu: this.disableContextMenu }, chevronDown)
 		]);
 	},
 
